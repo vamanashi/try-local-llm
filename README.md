@@ -5,5 +5,11 @@ LM Studioでローカルサーバを立ててAPIを叩いてみる。
 export OPENAI_API_KEY="dummmy"
 ```
 
+環境構築
+```
+uv venv
+uv pip install openai
+```
+
 参考
 https://note.com/yuki_tech/n/nc00c211a0ad8
