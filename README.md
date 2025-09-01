@@ -9,6 +9,7 @@ export OPENAI_API_KEY="dummmy"
 ```
 uv venv
 uv pip install openai
+uv pip install openai-agents 
 ```
 
 参考

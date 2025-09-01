@@ -1,5 +1,7 @@
 .venv
 todo.md
+references/
+logs/
 
 __pycache__/
 .DS_Store
