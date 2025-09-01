@@ -32,13 +32,9 @@ tools = [
                     "sign": {
                         "type": "string",
                         "description": "牡牛座や水瓶座などの占星術のサイン",
-                    },
-                    "fortune": {
-                        "type": "string",
-                        "description": "星座に関連する運勢の内容",
                     }
                 },
-                "required": ["sign", "fortune"],
+                "required": ["sign"],
             },
         },
     },
@@ -80,4 +76,8 @@ def get_zodiac_sign(birthday):
     誕生日（YYYY-MM-DD）を入力すると星座名を返す。
     """
     # ダミー実装
-    return "山羊座"
+    import re
+    if not re.match(r"^\d{4}-\d{2}-\d{2}$", birthday):
+        return "不正な日付形式です。YYYY-MM-DD形式で入力してください。"
+    else:
+        return "水瓶座"
