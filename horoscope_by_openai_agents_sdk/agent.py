@@ -2,7 +2,7 @@
 # main
 # ===========================
 from openai import AsyncOpenAI
-from agents import Agent, OpenAIChatCompletionsModel, Runner, set_tracing_disabled
+from agents import Agent, OpenAIChatCompletionsModel, ItemHelpers, Runner, set_tracing_disabled
 from agents.run import RunConfig
 
 import json
@@ -90,13 +90,27 @@ class HoroscopeAgent:
         # ユーザーメッセージを追加
         self.messages.append({"role": "user", "content": user_input})
 
-        result = await Runner.run(
+        result = Runner.run_streamed(
             self.horoscope_agent,
             input=self.messages,
-            context=context,
+            context=context
             )
         
-        # 保存
-        self.messages.append({"role": "assistant", "content": result.final_output})
-
-        return result.final_output
+        async for event in result.stream_events():
+            # We'll ignore the raw responses event deltas
+            if event.type == "raw_response_event":
+                continue
+            # When the agent updates, print that
+            elif event.type == "agent_updated_stream_event":
+                yield f"Agent updated: {event.new_agent.name}\n"
+                continue
+            # When items are generated, print them
+            elif event.type == "run_item_stream_event":
+                if event.item.type == "tool_call_item":
+                    yield "-- Tool was called\n"
+                elif event.item.type == "tool_call_output_item":
+                    yield f"-- Tool output: {event.item.output}\n"
+                elif event.item.type == "message_output_item":
+                    yield f"-- Message output:\n {ItemHelpers.text_message_output(event.item)}\n"
+                else:
+                    pass  # Ignore other event types
