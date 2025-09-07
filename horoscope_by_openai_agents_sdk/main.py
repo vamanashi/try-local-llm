@@ -34,6 +34,17 @@ async def chat_loop():
             # ここでログ出しや再試行の方針を決める
             print(f"\n[エラー] 応答の取得に失敗しました: {e}")
 
+    # ループ終了後（セッション終了時）に履歴をまとめて出力
+    try:
+        print("\n=== セッション履歴（Agent出力） ===")
+        for entry in agent.history.entries:
+            # 既存の出力文面を保つため、そのまま出す
+            print(entry.text, end="")
+        print()  # 最後に改行
+    except Exception:
+        # 履歴がない/初期化前などでも落ちないよう安全側に
+        pass
+
 async def main():
     await chat_loop()
 
