@@ -1,6 +1,8 @@
 # main.py
 import asyncio
 from agent import HoroscopeAgent
+from datetime import datetime
+import uuid
 
 async def async_input(prompt: str) -> str:
     # 入力をスレッドに逃がしてイベントループを止めない
@@ -10,7 +12,8 @@ async def chat_loop():
     print("=== 占いアシスタントを開始します ===")
     print("（例）こんにちは など自由に話しかけてください。'exit' で終了。")
 
-    agent = HoroscopeAgent()  # セッションを内部で引き継げるなら再利用
+    session_id=f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4()}"
+    agent = HoroscopeAgent(session_id)  # セッションを内部で引き継げるなら再利用
 
     while True:
         try:
