@@ -13,13 +13,7 @@ from tools import get_horoscope, get_lucky_item, get_zodiac_sign
 from history import AgentHistory
 
 # トレースを無効化
-# set_tracing_disabled(True)
-
-# ローカルトレースを有効化
-from agents.tracing import set_trace_processors
-from local_tracing import LocalJsonlAndPrettyProcessor
-set_trace_processors([LocalJsonlAndPrettyProcessor()])
-
+set_tracing_disabled(True)
 
 # -----------------------------
 #  コンテキスト（ユーザー状態, session）
